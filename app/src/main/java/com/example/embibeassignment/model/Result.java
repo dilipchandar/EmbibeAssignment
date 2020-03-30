@@ -4,9 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "results")
+@Entity(tableName = "results", indices = {@Index(value = {"title", "poster_path"},
+        unique = true)})
 public class Result {
 
     @PrimaryKey(autoGenerate = true)

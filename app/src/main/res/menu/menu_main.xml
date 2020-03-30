@@ -5,7 +5,7 @@
         android:id="@+id/action_search"
         android:icon="@mipmap/ic_launcher"
         android:orderInCategory="100"
-        android:title="Search"
+        android:title="Search by title"
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
 </menu>
