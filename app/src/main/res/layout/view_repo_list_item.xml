@@ -28,8 +28,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/bookmark"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/addbookmark"
         android:layout_alignBaseline="@+id/image_poster"/>
 
 </RelativeLayout>

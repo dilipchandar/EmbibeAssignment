@@ -2,6 +2,7 @@ package com.example.embibeassignment.ui;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,7 +14,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.embibeassignment.MyRepo;
@@ -115,16 +115,8 @@ public class MainActivity extends AppCompatActivity {
         btnShowBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final List<Result> resultList = new ArrayList<>();
-
-                executorService.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        resultList.addAll(resultDao.getAll());
-                    }
-                });
-                recyclerView.setAdapter(new RepoListAdapter(MainActivity.this, resultList));
-                recyclerView.invalidate();
+                Intent intent = new Intent(MainActivity.this, BookmarkActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -296,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
             TextView textTitle;
             ImageView imagePoster;
             ImageView imageBookmark;
+            boolean alreadyBookMarked = false;
 
 
             RepoViewHolder(View itemView) {
@@ -313,11 +306,19 @@ public class MainActivity extends AppCompatActivity {
                 imageBookmark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(context, "Bookmarked", Toast.LENGTH_LONG).show();
                         executorService.execute(new Runnable() {
                             @Override
                             public void run() {
-                                resultDao.insertAll(result);
+                                if(!alreadyBookMarked) {
+                                    resultDao.insertAll(result);
+                                    imageBookmark.setImageResource(R.drawable.removebookmark);
+                                    alreadyBookMarked = true;
+                                }
+                                else {
+                                    resultDao.delete(result);
+                                    imageBookmark.setImageResource(R.drawable.addbookmark);
+                                    alreadyBookMarked = false;
+                                }
                             }
                         });
                     }
