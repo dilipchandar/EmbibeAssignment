@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Movies> call, Response<Movies> response) {
                 totalResultList.addAll(response.body().getResult());
                 if(currentPage > 1) {
-                    adapter = new RepoListAdapter(MainActivity.this, totalResultList);
+                    adapter.resultListFiltered = totalResultList;
                     progressBar.setVisibility(View.GONE);
                 } else {
                     generateDataList(totalResultList);
@@ -237,14 +237,7 @@ public class MainActivity extends AppCompatActivity {
                         resultListFiltered = data;
                     } else {
                         final List<Result> filteredList = new ArrayList<>();
-//                        for (Result row : data) {
-//
-//                            // name match condition. this might differ depending on your requirement
-//                            // here we are looking for name or phone number match
-//                            if (row.getTitle().toLowerCase().contains(charString.toLowerCase())) {
-//                                filteredList.add(row);
-//                            }
-//                        }
+
                         map.put("page", Integer.toString(currentPage));
                         map.put("query", charString);
                         myRepoList = myRepo.getQuery(map);
@@ -302,6 +295,18 @@ public class MainActivity extends AppCompatActivity {
                 textTitle.setText(result.getTitle());
                 String imageUrl = IMAGE_URL_BASE_PATH + result.getPoster_path();
                 Glide.with(context).load(imageUrl).override(200, 100).into(imagePoster);
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(resultDao.checkIfItemExists(result.getTitle())==0) {
+                            imageBookmark.setImageResource(R.drawable.addbookmark);
+                            alreadyBookMarked = false;
+                        } else {
+                            imageBookmark.setImageResource(R.drawable.removebookmark);
+                            alreadyBookMarked = true;
+                        }
+                    }
+                });
 
                 imageBookmark.setOnClickListener(new View.OnClickListener() {
                     @Override

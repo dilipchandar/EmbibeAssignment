@@ -23,4 +23,7 @@ public interface ResultDao {
     @Delete
     void delete(Result result);
 
+    @Query("SELECT * FROM results WHERE title=:title")
+    int checkIfItemExists(String title);
+
 }
