@@ -310,7 +310,8 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if(!alreadyBookMarked) {
-                                    resultDao.insertAll(result);
+                                    long id = resultDao.insertAll(result);
+                                    result.setUid(id);
                                     imageBookmark.setImageResource(R.drawable.removebookmark);
                                     alreadyBookMarked = true;
                                 }

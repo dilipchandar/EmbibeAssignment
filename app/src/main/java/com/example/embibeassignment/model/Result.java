@@ -13,7 +13,7 @@ public class Result {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "uid")
-    private int uid;
+    private long uid;
 
     @ColumnInfo(name = "title")
     @SerializedName("title")
@@ -23,11 +23,11 @@ public class Result {
     @SerializedName("poster_path")
     private String poster_path;
 
-    public int getUid() {
+    public long getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(long uid) {
         this.uid = uid;
     }
 
