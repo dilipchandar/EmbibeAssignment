@@ -2,8 +2,7 @@ package com.example.embibeassignment.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.embibeassignment.R;
@@ -23,24 +22,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class BookmarkActivity extends Activity {
 
-    private RecyclerView recyclerView;
     ResultDao resultDao;
-    private ExecutorService executorService;
-
+    TextView textNoItems;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_bookmark);
-        recyclerView = findViewById(R.id.recyclerview_bookmark);
+        final RecyclerView recyclerView = findViewById(R.id.recyclerview_bookmark);
+        textNoItems = findViewById(R.id.text_noitems);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         AppDatabase appDatabase = AppDatabase.getAppDatabase(this);
         resultDao = appDatabase.resultDao();
-        executorService = Executors.newSingleThreadExecutor();
+         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         final List<Result> resultList = new ArrayList<>();
 
@@ -48,10 +46,15 @@ public class BookmarkActivity extends Activity {
             @Override
             public void run() {
                 resultList.addAll(resultDao.getAll());
+                if(resultList.size() == 0) {
+                    textNoItems.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setAdapter(new BookmarkAdapter(BookmarkActivity.this, resultList));
+                    textNoItems.setVisibility(View.GONE);
+                }
             }
         });
 
-        recyclerView.setAdapter(new BookmarkAdapter(this, resultList));
     }
 
 }

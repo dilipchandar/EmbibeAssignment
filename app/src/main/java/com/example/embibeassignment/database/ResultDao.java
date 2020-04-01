@@ -5,11 +5,9 @@ import com.example.embibeassignment.model.Result;
 import java.util.List;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
 @Dao
 public interface ResultDao {
@@ -20,8 +18,8 @@ public interface ResultDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertAll(Result result);
 
-    @Delete
-    void delete(Result result);
+    @Query("DELETE FROM results WHERE title=:title")
+    void delete(String title);
 
     @Query("SELECT * FROM results WHERE title=:title")
     int checkIfItemExists(String title);

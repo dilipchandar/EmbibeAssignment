@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -52,12 +53,10 @@ public class MainActivity extends AppCompatActivity {
     RepoListAdapter adapter;
     Map<String, String> map = new HashMap<>();
     MyRepo myRepo;
-    BookmarkViewModel bookmarkViewModel;
     ResultDao resultDao;
     private ExecutorService executorService;
     private int currentPage = 1;
     private ProgressBar progressBar;
-    private Button btnShowBookmark;
     private List<Result> totalResultList = new ArrayList<>();
 
     @Override
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progressBar);
-        btnShowBookmark = findViewById(R.id.btnShowBookmark);
+        Button btnShowBookmark = findViewById(R.id.btnShowBookmark);
         ((App) getApplication()).getComponent().inject(this);
 
         AppDatabase appDatabase = AppDatabase.getAppDatabase(this);
@@ -74,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // toolbar fancy stuff
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Search by title");
 
@@ -149,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
                 .getActionView();
@@ -321,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
                                     alreadyBookMarked = true;
                                 }
                                 else {
-                                    resultDao.delete(result);
+                                    resultDao.delete(result.getTitle());
                                     imageBookmark.setImageResource(R.drawable.addbookmark);
                                     alreadyBookMarked = false;
                                 }

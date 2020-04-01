@@ -1,7 +1,6 @@
 package com.example.embibeassignment;
 
 import com.example.embibeassignment.model.Movies;
-import com.example.embibeassignment.model.Result;
 
 import java.util.Map;
 
